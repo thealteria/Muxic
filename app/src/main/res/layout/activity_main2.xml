@@ -2,72 +2,83 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#1E90FF"
+    android:paddingTop="16dp"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:orientation="horizontal"
-        android:layout_alignParentTop="true">
+    android:id="@+id/rl"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile"
-            android:textColor="#ffffff"
-            android:layout_marginLeft="150dp"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal|center_vertical"/>
-
-    </LinearLayout>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Profile"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="5dp"
+        android:textSize="40dp"
+        android:layout_gravity="center_horizontal|center_vertical"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="400dp"
         android:background="@drawable/back"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="70dp"
         android:orientation="vertical"
         >
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/viewImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="5dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            app:civ_border_width="2dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/boy_5" />
 
-        <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:hint="name"
-        android:background="#f3f3f3"
-        android:paddingLeft="5dp"
-        android:layout_marginTop="15dp"/>
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:hint="Email"
-            android:background="#f3f3f3"
-            android:paddingLeft="5dp"
-            android:layout_marginTop="4dp"/>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:id="@+id/name"
+                android:hint="name"
+                android:background="#f3f3f3"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="20dp"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:id="@+id/email"
+                android:hint="Email"
+                android:background="#f3f3f3"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="5dp"/>
+
+        </android.support.design.widget.TextInputLayout>
 
 
-        <Button
+        <TextView
             android:layout_width="140dp"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:id="@+id/btnSelectPhoto"
             android:text="Album"
+            android:textAlignment="center"
+            android:gravity="center"
             android:clickable="true"
-            android:layout_marginTop="50dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginTop="45dp"
             android:background="@drawable/bb"/>
     </LinearLayout>
 
@@ -77,27 +88,29 @@
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="95dp">
-        <Button
-            android:textSize="18dp"
+        <TextView
+            android:textSize="22dp"
             android:textColor="@color/button_color"
             android:background="@drawable/button"
             android:gravity="center"
             android:layout_gravity="bottom"
             android:id="@+id/cancel"
-            android:layout_width="0.0dip"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:text="cancel"
+            android:text="Cancel"
+            android:textStyle="bold"
             android:layout_weight="1.0" />
-        <Button
-            android:textSize="18dp"
+        <TextView
+            android:textSize="22dp"
             android:textColor="@color/button_color"
             android:gravity="center"
             android:layout_gravity="bottom"
             android:clickable="true"
             android:id="@+id/ok"
-            android:layout_width="0.0dip"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:text="save"
+            android:text="Save"
+            android:textStyle="bold"
             android:layout_weight="1.0"
             android:background="@drawable/button"/>
     </LinearLayout>
