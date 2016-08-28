@@ -4,6 +4,7 @@ package com.example.user.muxic;
  * Created by Aman on 8/20/2016.
  */
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.database.Cursor;
 import android.media.MediaPlayer;
@@ -12,15 +13,22 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MusicActivity extends Activity {
+    private final String MEDIA_PATH = new String("/sdcard/");
+    private List<String> song = new ArrayList<String>();
     ListView musiclist;
     Cursor cursor;
     int column_index;
     int count;
+    private List<String> songs = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,8 +37,8 @@ public class MusicActivity extends Activity {
         init_phone_music_grid();
     }
 
+
     private void init_phone_music_grid() {
-        System.gc();
         String[] proj = { MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.DATA,
                 MediaStore.Audio.Media.DISPLAY_NAME,

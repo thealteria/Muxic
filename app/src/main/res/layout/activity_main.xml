@@ -31,12 +31,12 @@
 
     <Button
         android:id="@+id/btn_next"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@null"
-        android:text="@string/next"
+        android:text="Let's Get Started"
         android:clickable="true"
         android:textColor="@android:color/white" />
 

@@ -78,7 +78,6 @@ public class MainActivity2 extends AppCompatActivity {
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-                    startActivityForResult(intent, 2);
 
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -127,7 +126,7 @@ public class MainActivity2 extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if (requestCode == 2 && requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
+            } else if (requestCode == 2 && data != null && data.getData() != null) {
 
                 Uri uri = data.getData();
 
@@ -143,4 +142,4 @@ public class MainActivity2 extends AppCompatActivity {
         }
             }
         }
-    
+
