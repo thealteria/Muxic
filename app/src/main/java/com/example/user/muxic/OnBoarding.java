@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class OnBoarding extends AppCompatActivity {
 
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchScreen() {
-        Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+        Intent intent = new Intent(OnBoarding.this, Login.class);
         startActivity(intent);
         finish();
     }

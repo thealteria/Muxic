@@ -14,11 +14,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create Profile"
+        android:id="@+id/profile"
         android:textColor="#ffffff"
         android:textStyle="bold"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="5dp"
-        android:textSize="40dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="0dp"
+        android:textSize="30sp"
+
         android:layout_gravity="center_horizontal|center_vertical"/>
 
     <LinearLayout
@@ -32,7 +34,7 @@
             android:id="@+id/viewImage"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             app:civ_border_width="2dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/boy_5" />
@@ -43,20 +45,21 @@
 
             <EditText
                 android:layout_width="fill_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:id="@+id/name"
-                android:hint="name"
+                android:hint="Name"
                 android:background="#f3f3f3"
                 android:paddingLeft="5dp"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="25dp"/>
         </android.support.design.widget.TextInputLayout>
+
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
                 android:layout_width="fill_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:id="@+id/email"
                 android:hint="Email"
                 android:background="#f3f3f3"
@@ -80,6 +83,7 @@
             android:textColor="#ffffff"
             android:layout_marginTop="45dp"
             android:background="@drawable/bb"/>
+
     </LinearLayout>
 
     <LinearLayout android:layout_gravity="bottom"

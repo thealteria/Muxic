@@ -10,6 +10,10 @@ import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -34,7 +38,23 @@ public class MusicActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
+
+
         init_phone_music_grid();
+        initList();
+    }
+
+    private void initList() {
+
+        RecyclerView list = (RecyclerView) findViewById(R.id.mulist);
+
+        MusicAdapter madapter = new MusicAdapter(getApplicationContext(),songs);
+        list.setAdapter(madapter);
+
+        LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext());
+        list.setLayoutManager(lm);
+        list.setItemAnimator(new DefaultItemAnimator());
+
     }
 
 
@@ -46,49 +66,14 @@ public class MusicActivity extends Activity {
         cursor = managedQuery(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 proj, null, null, null);
         count = cursor.getCount();
-        musiclist = (ListView) findViewById(R.id.mulist);
-        musiclist.setAdapter(new MusicAdapter(getApplicationContext()));
-
-
-    }
-
-    public class MusicAdapter extends BaseAdapter {
-        private Context mContext;
-
-        public MusicAdapter(Context c) {
-            mContext = c;
+        for (int i =0;i<count ;i++)
+        {
+            int column_index = cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME);
+            cursor.moveToPosition(i);
+            Log.d("songsname",cursor.getString(column_index));
+            songs.add(cursor.getString(column_index));
         }
+       }
 
-        public int getCount() {
-            return count;
-        }
 
-        public Object getItem(int position) {
-            return position;
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            System.gc();
-            TextView tv = new TextView(mContext.getApplicationContext());
-            String id = null;
-            if (convertView == null) {
-
-                column_index = cursor
-                        .getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME);
-                cursor.moveToPosition(position);
-                id = cursor.getString(column_index);
-                column_index = cursor
-                        .getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE);
-                cursor.moveToPosition(position);
-                id += " Size(KB):" + cursor.getString(column_index);
-                tv.setText(id);
-            } else
-                tv = (TextView) convertView;
-            return tv;
-        }
-    }
 }
