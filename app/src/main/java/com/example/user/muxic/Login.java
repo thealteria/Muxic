@@ -1,30 +1,31 @@
 package com.example.user.muxic;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class Login extends AppCompatActivity {
@@ -32,7 +33,9 @@ public class Login extends AppCompatActivity {
     private Uri mImageCaptureUri;
     private ImageView mImageView;
     private AlertDialog dialog;
+    EditText username;
 
+    DBHandler db;
     private static final int PICK_FROM_CAMERA = 1;
     private static final int CROP_FROM_CAMERA = 2;
     private static final int PICK_FROM_FILE = 3;
@@ -43,6 +46,10 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         captureImage();
 
+        username= (EditText) findViewById(R.id.name);
+        db=new DBHandler(getApplicationContext());
+        db.new_login(String.valueOf(username.getText()));
+
         TextView button = (TextView) findViewById(R.id.btnSelectPhoto);
         mImageView = (ImageView) findViewById(R.id.viewImage);
 
@@ -51,11 +58,20 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Login.this, MusicActivity.class);
+                Intent intent = new Intent(Login.this, choice.class);
                 startActivity(intent);
-
             }
         });
+
+        TextView exittxt = (TextView) findViewById(R.id.cancel);
+        exittxt.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
 
         button.setOnClickListener(new View.OnClickListener() {

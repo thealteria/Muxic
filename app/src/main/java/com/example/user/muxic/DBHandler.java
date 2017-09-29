@@ -5,21 +5,25 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Pawan on 14-Aug-16.
+ * Created by Aman on 14-Aug-16.
  */
 public class DBHandler extends SQLiteOpenHelper {
 
     private static final int DB_VERSION = 13;
     private static final String DB_NAME = "DATABASE";
+
     private static final String TABLE_SONGS = "SONGS";
-    private static final String DELETED_NOTES = "Deleted_Notes";
+    private static final String TABLE_LOGIN = "LOGIN";
 
     private static final String KEY_NAME = "Name";
-    private static final String KEY_TEXT = "Text";
-    private static final String KEY_TIME = "Time";
-    private static final String KEY_DATE = "Date";
+    private static final String KEY_USERNAME = "UserName";
+
 
     public DBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -29,264 +33,95 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String CREATE_NOTES_TABLE = "Create Table " + TABLE_SONGS + "("
-                + KEY_NAME + " Text,"
-                + KEY_TEXT + " Text,"
-                + KEY_TIME + " Text,"
-                + KEY_DATE + " Text,"
-                + "Primary Key( " + KEY_DATE + ", " + KEY_TIME + "))";
+                + KEY_NAME + " Text " + ")";
 
         db.execSQL(CREATE_NOTES_TABLE);
 
-        String DELETE_NOTES = "Create Table " + DELETED_NOTES + "("
-                + KEY_NAME + " Text,"
-                + KEY_TEXT + " Text,"
-                + KEY_TIME + " Text,"
-                + KEY_DATE + " Text,"
-                + "Primary Key( " + KEY_DATE + ", " + KEY_TIME + "))";
+        String CREATE_LOGIN_TABLE = "Create Table " + TABLE_LOGIN + "("
+                + KEY_USERNAME + " Text " + ")";
 
-        db.execSQL(DELETE_NOTES);
+        db.execSQL(CREATE_LOGIN_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SONGS);
-        db.execSQL("DROP TABLE IF EXISTS " + DELETED_NOTES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGIN);
         onCreate(db);
     }
 
-    public void new_note(String Name, String Text, String Time, String Date) {
+    public void new_note(String Name ) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-
         values.put(KEY_NAME, Name);
-        values.put(KEY_TEXT, Text);
-        values.put(KEY_TIME, Time);
-        values.put(KEY_DATE, Date);
 
         db.insert(TABLE_SONGS, null, values);
-        db.close();
+        Log.d("query",String.valueOf(TABLE_SONGS));
+
     }
 
-    public void new_del_note(String Name, String Text, String Time, String Date) {
+    public void new_login(String name ) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(KEY_USERNAME, name);
 
-        values.put(KEY_NAME, Name);
-        values.put(KEY_TEXT, Text);
-        values.put(KEY_TIME, Time);
-        values.put(KEY_DATE, Date);
+        db.insert(TABLE_LOGIN, null, values);
+        Log.d("query",String.valueOf(TABLE_LOGIN));
 
-        db.insert(DELETED_NOTES, null, values);
-        db.close();
     }
 
-    public void delete_note(String Date, String Time) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String select_query = "Select * from " + TABLE_SONGS + " where " + KEY_DATE + " = '" + Date + "' AND " + KEY_TIME + " = '" + Time + "'";
-        String query = "delete from " + TABLE_SONGS + " where " + KEY_DATE + " = '" + Date + "' AND " + KEY_TIME + " = '" + Time + "'";
-        Cursor csr1 = db.rawQuery(select_query,null);
-        Cursor csr = db.rawQuery(query, null);
-
-        csr1.moveToFirst();
-        csr.moveToFirst();
-
-        new_del_note(csr1.getString(0), csr1.getString(1), csr1.getString(2), csr1.getString(3));
-
-        csr.close();
-        csr1.close();
-        db.close();
-    }
-
-    public void undo_delete_note(String Date, String Time) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String select_query = "Select * from " + DELETED_NOTES + " where " + KEY_DATE + " = '" + Date + "' AND " + KEY_TIME + " = '" + Time + "'";
-        String query = "delete from " + DELETED_NOTES + " where " + KEY_DATE + " = '" + Date + "' AND " + KEY_TIME + " = '" + Time + "'";
-        Cursor csr1 = db.rawQuery(select_query,null);
-        Cursor csr = db.rawQuery(query, null);
-        csr1.moveToFirst();
-        csr.moveToFirst();
-
-        new_note(csr1.getString(0),csr1.getString(1),csr1.getString(2),csr1.getString(3));
-
-        csr.close();
-        csr1.close();
-        db.close();
-    }
-
-    public void delete_forever(String Date, String Time){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "delete from " + DELETED_NOTES + " where " + KEY_DATE + " = '" + Date + "' AND " + KEY_TIME + " = '" + Time + "'";
-        Cursor csr = db.rawQuery(query, null);
-        csr.close();
-        db.close();
-    }
-
-    public int get_count(){
+    public List<String> access_data(){
         SQLiteDatabase db = this.getReadableDatabase();
-
-        String count_query = "Select * from " + TABLE_SONGS;
-        Cursor csr = db.rawQuery(count_query,null);
-        int count = csr.getCount();
-
-        db.close();
-        csr.close();
-
-        return count;
-    }
-
-    public int get_del_count(){
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String count_query = "Select * from " + DELETED_NOTES;
-        Cursor csr = db.rawQuery(count_query,null);
-        int count = csr.getCount();
-
-        db.close();
-        csr.close();
-
-        return count;
-    }
-
-    public String[] get_single_note(int position){
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String[] pos_note = new String[4];
+        List<String> pos_note=new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_SONGS;
-        Cursor csr = db.rawQuery(query, null);
-        csr.moveToFirst();
-        int count = csr.getCount();
-        int i = 0;
-        while (count > 0) {
-            if(i==position){
-                pos_note[0] = csr.getString(0);
-                pos_note[1] = csr.getString(1);
-                pos_note[2] = csr.getString(2);
-                pos_note[3] = csr.getString(3);
-            }
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        if(cursor.getCount() > 0) {
+            do {
 
-            i++;
-            csr.moveToNext();
-            count--;
+                pos_note.add(cursor.getString(0));
+
+            } while(cursor.moveToNext());
+
         }
-        csr.close();
-        db.close();
+        cursor.close();
+        Log.d("note123", String.valueOf(pos_note));
         return pos_note;
+
     }
 
-    public String[] get_del_single_note(int position){
+
+    public List<String> access_login(){
         SQLiteDatabase db = this.getReadableDatabase();
+        List<String> note=new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_LOGIN;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        if(cursor.getCount() > 0) {
+            do {
 
-        String[] pos_note = new String[4];
-        String query = "SELECT * FROM " + DELETED_NOTES;
-        Cursor csr = db.rawQuery(query, null);
-        csr.moveToFirst();
-        int count = csr.getCount();
-        int i = 0;
-        while (count > 0) {
-            if(i==position){
-                pos_note[0] = csr.getString(0);
-                pos_note[1] = csr.getString(1);
-                pos_note[2] = csr.getString(2);
-                pos_note[3] = csr.getString(3);
-            }
+                note.add(cursor.getString(0));
 
-            i++;
-            csr.moveToNext();
-            count--;
+            } while(cursor.moveToNext());
+
         }
-        csr.close();
-        db.close();
-        return pos_note;
+        cursor.close();
+        Log.d("note123", String.valueOf(note));
+        return note;
     }
 
-    public String[] get_name() {
-        SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM " + TABLE_SONGS;
-        Cursor csr = db.rawQuery(query, null);
-        csr.moveToFirst();
-        int count = csr.getCount();
-        String [] name = new String[count];
+    public void resetTable_Records() {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        int i = 0;
-        while (count > 0) {
-            name[i] = csr.getString(0);
-            i++;
-            csr.moveToNext();
-            count--;
-        }
-
-        csr.close();
-        db.close();
-        return name;
+        db.delete(TABLE_SONGS, null, null);
     }
 
-    public String[] get_del_name() {
-        SQLiteDatabase db = this.getReadableDatabase();
+    public void resetTable_login() {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT * FROM " + DELETED_NOTES;
-        Cursor csr = db.rawQuery(query, null);
-        csr.moveToFirst();
-        int count = csr.getCount();
-        String [] name = new String[count];
-
-        int i = 0;
-        while (count > 0) {
-            name[i] = csr.getString(0);
-            i++;
-            csr.moveToNext();
-            count--;
-        }
-
-        csr.close();
-        db.close();
-        return name;
-    }
-
-    public String[] get_date() {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String query = "SELECT * FROM " + TABLE_SONGS;
-        Cursor csr = db.rawQuery(query, null);
-        csr.moveToFirst();
-        int count = csr.getCount();
-        String [] date = new String[count];
-
-        int i = 0;
-        while (count > 0) {
-            date[i] = csr.getString(2);
-            i++;
-            csr.moveToNext();
-            count--;
-        }
-
-        csr.close();
-        db.close();
-        return date;
-    }
-
-    public String[] get_del_date() {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String query = "SELECT * FROM " + DELETED_NOTES;
-        Cursor csr = db.rawQuery(query, null);
-        csr.moveToFirst();
-        int count = csr.getCount();
-        String [] date = new String[count];
-
-        int i = 0;
-        while (count > 0) {
-            date[i] = csr.getString(2);
-            i++;
-            csr.moveToNext();
-            count--;
-        }
-
-        csr.close();
-        db.close();
-        return date;
+        db.delete(TABLE_LOGIN, null, null);
     }
 }
+
