@@ -9,4 +9,5 @@
     <string name="start">Lets Get Started</string>
 
     <string name="title_activity_main3">MainActivity3</string>
-    </resources>
+    <string name="name">Name</string>
+</resources>

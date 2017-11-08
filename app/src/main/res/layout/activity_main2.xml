@@ -17,7 +17,7 @@
         android:id="@+id/profile"
         android:textColor="#ffffff"
         android:textStyle="bold"
-        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100sp"
         android:layout_marginTop="0dp"
         android:textSize="30sp"
 
@@ -44,13 +44,15 @@
             android:layout_height="wrap_content">
 
             <EditText
+                android:id="@+id/name"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
-                android:id="@+id/name"
-                android:hint="Name"
+                android:layout_marginTop="25dp"
                 android:background="#f3f3f3"
+                android:hint="@string/name"
+                android:maxLines="1"
                 android:paddingLeft="5dp"
-                android:layout_marginTop="25dp"/>
+                android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 
 
